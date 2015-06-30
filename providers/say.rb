@@ -5,7 +5,7 @@ end
 use_inline_resources
 
 action :say do
-  slack = Slackr.connect(node.slack.team,node.slack.api_key)
+  slack = Slackr.connect(node["slack"]["team"], node["slack"]["api_key"])
 
   options = {}
   options["channel"]    = new_resource.channel     if new_resource.channel

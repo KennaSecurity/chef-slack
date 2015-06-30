@@ -24,4 +24,10 @@ chef_gem "slackr" do
   compile_time true if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
 end
 
-require 'slackr'
+begin
+  if node["slack"]["should_require_slackr"]
+    require 'slackr'
+  end
+rescue LoadError
+  Chef::Log.fatal("Slackr gem load error.")
+end
