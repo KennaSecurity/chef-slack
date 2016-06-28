@@ -2,7 +2,7 @@
 # Cookbook Name:: slack
 # Recipe:: default
 #
-# Copyright 2014, Risk I/O
+# Copyright 2015, Ian Henry <ihenry@chef.io>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-chef_gem "slackr" do
-  version '0.0.5'
+chef_gem 'slack-notifier' do
+  version '1.2.1'
   action :install
-  # removing compile_time warnings in Chef 12 per:
-  # http://jtimberman.housepub.org/blog/2015/03/20/chef-gem-compile-time-compatibility/
   compile_time true if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
 end
 
-require 'slackr'
+require 'slack-notifier'

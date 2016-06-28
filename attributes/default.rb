@@ -1,2 +1,1 @@
-default[:slack][:team]         = nil
-default[:slack][:api_key]      = nil
+default[:slack][:webhook_url]         = nil

@@ -1,4 +1,4 @@
-slack Cookbook
+Slack Notification Cookbook
 ==============
 
 This cookbook sends messages to a [Slack](http://www.slack.com) chatroom using the Incoming
@@ -8,7 +8,7 @@ Requirements
 ------------
 
 #### packages
-- `slackr` - Uses the [slackr](https://github.com/risk-io/slackr)
+- `slack-notifier` - Uses the [slack-notifier](https://github.com/stevenosloan/slack-notifier.git)
   rubygem to talk to Slack
 
 Attributes
@@ -23,15 +23,9 @@ Attributes
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['slack']['team']</tt></td>
+    <td><tt>['slack']['webhook_url']</tt></td>
     <td>String</td>
-    <td>Your Slack team-name</td>
-    <td><tt>nil</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['slack']['api_key']</tt></td>
-    <td>String</td>
-    <td>The Incoming Webhook API key</td>
+    <td>Your Incoming Webhook URL</td>
     <td><tt>nil</tt></td>
   </tr>
 </table>
@@ -42,29 +36,31 @@ https://hooks.slack.com/services/XXXXXXXXXX/YYYYYYYYY/ZZZZZZZZZZZZZZ
 
 LWRP Usage
 -----
-In your `metadata.rb` you need to add `depends 'slack'` and add `include_recipe 'slack'` to your recipe.
+In your `metadata.rb` you need to add `depends 'slack'` and add `include_recipe 'slack'` to your recipe. Passing the below will use default attributes
 
 ```ruby
-slack_say "Say something clever"
+slack_notify "Say Summat!"
 ```
 
 ```ruby
-slack_say "say_something_clever" do
-  message "Look I'm a Ghost! Boo!"
-  icon_emoji ":ghost:"
+slack_notify "send_notification_message" do
+  message "This is a notification message"
+  webhook_url 'https://hooks.slack.com/services/XXXX/XXXXXXX/XXXXXX'
   not_if { node['im_boring'] }
 end
 ```
 
 ```ruby
-slack_say "lazy_ghost" do
-  message "Boo! I'm still a ghost"
-  icon_emoji ":ghost:"
+slack_notify "channel_nothing" do
+  message "heres a message to kick off later"
+  username 'test_user'
+  channels ['foo','bar']
+  webhook_url 'https://hooks.slack.com/services/XXXX/XXXXXXX/XXXXXX'
   action :nothing
 end
 
-something "talk_as_ghost" do
-  notifies :say, "slack_say[lazy_ghost]", :immediately
+something "talk_as_test_user_to_multiple_channels" do
+  notifies :say, "slack[channel_nothing]", :immediately
 end
 ```
 
@@ -79,4 +75,4 @@ Contributing
 
 License and Authors
 -------------------
-Authors: Jason Rohwedder <jro@risk.io>
+Authors: Ian Henry <ihenry@chef.io>
